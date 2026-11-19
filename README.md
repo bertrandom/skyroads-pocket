@@ -14,21 +14,6 @@ of the road matters: light green speeds you up, dark green slows you down,
 dark grey is too slippery to steer on, red burns and blue refills fuel and
 oxygen.  There are 30 roads in 10 worlds.
 
-```mermaid
-flowchart LR
-  decomp["<b>skyroads-decomp</b><br/>decompilation and native port"]
-  web["<b>skyroads-web</b><br/>web port, ghost relay, deploy"]
-  pocket["<b>skyroads-pocket</b><br/>Analogue Pocket core"]
-  web -- "decomp/ submodule" --> decomp
-  pocket -- "decomp/ submodule" --> decomp
-  click decomp "https://github.com/bertrandom/skyroads-decomp"
-  click web "https://github.com/bertrandom/skyroads-web"
-  classDef here stroke-width:3px
-  class pocket here
-```
-
-This repository is **skyroads-pocket**. The others: [skyroads-decomp](https://github.com/bertrandom/skyroads-decomp) · [skyroads-web](https://github.com/bertrandom/skyroads-web).
-
 This is an openFPGA core that runs SkyRoads on the Pocket.  It is not an
 emulator, and the game is not rewritten in Verilog: the FPGA holds a small
 RISC-V computer (the SoC), and that computer runs the same decompiled C
@@ -91,6 +76,22 @@ runs the Pocket cannot sleep.
   APF bridge ◄──► save RAM 1 KiB (skyroads.cfg) ◄─────────────────────┤    PC speaker ───────────┘
                                                                       └──► timer, retrace counter, cycle counter
 ```
+
+```mermaid
+flowchart LR
+  decomp["<b>skyroads-decomp</b><br/>decompilation and native port"]
+  web["<b>skyroads-web</b><br/>web port, ghost relay, deploy"]
+  pocket["<b>skyroads-pocket</b><br/>Analogue Pocket core"]
+  web -- "decomp/ submodule" --> decomp
+  pocket -- "decomp/ submodule" --> decomp
+  click decomp "https://github.com/bertrandom/skyroads-decomp"
+  click web "https://github.com/bertrandom/skyroads-web"
+  classDef here stroke-width:3px
+  class pocket here
+```
+
+This repository is **skyroads-pocket**. The others: [skyroads-decomp](https://github.com/bertrandom/skyroads-decomp) · [skyroads-web](https://github.com/bertrandom/skyroads-web).
+
 
 ## Building
 
