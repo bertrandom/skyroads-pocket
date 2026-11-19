@@ -1,7 +1,7 @@
 # The platform image (Platforms/_images/skyroads.bin), the picture the Pocket
 # shows for SkyRoads in its list of platforms: the game's main menu, its logo
 # over the start of the road, from the decompilation's art export (the menu
-# at 4:3, decomp/menu-backgrounds/4x3/mainmenu.png).
+# at 4:3, decomp/art/menu-backgrounds/4x3/mainmenu.png).
 #
 # Analogue's format: 521x165, stored rotated 90 degrees counter-clockwise
 # (165 pixels a row, 521 rows), 16 bits a pixel, the brightness in the first

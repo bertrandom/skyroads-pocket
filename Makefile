@@ -42,7 +42,7 @@ package: all
 	mkdir -p $(CORE) $(PKG)/Assets/skyroads/common $(PKG)/Platforms/_images
 	cp dist/Cores/skyroads.SkyRoads/* $(CORE)/
 	cp dist/Platforms/skyroads.json $(PKG)/Platforms/
-	python3 tools/mkplatimage.py decomp/menu-backgrounds/4x3/mainmenu.png $(PKG)/Platforms/_images/skyroads.bin
+	python3 tools/mkplatimage.py decomp/art/menu-backgrounds/4x3/mainmenu.png $(PKG)/Platforms/_images/skyroads.bin
 	cp build/skyroads_fw.bin build/skyroads_data.bin $(PKG)/Assets/skyroads/common/
 	@if [ -f $(RBF) ]; then python3 tools/reverse_rbf.py $(RBF) $(CORE)/skyroads.rbf_r; \
 	 else echo "no bitstream yet ($(RBF)): compile build/quartus first"; fi

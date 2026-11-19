@@ -1,8 +1,9 @@
 /* SkyRoads on the Analogue Pocket: the platform layer of the port.
  *
- * Replaces the SDL side of ../decomp/port (main.c, platform.c, hw.c and the
- * mixer in audio.c).  The game code itself (runtime.c, manual.c, render.c,
- * video.c, music.c and the generated game.c) is shared unchanged.
+ * Replaces the SDL platform layer, ../decomp/port/sdl (main.c, platform.c,
+ * hw.c and the mixer in audio.c).  The game code itself (runtime.c,
+ * manual.c, render.c, video.c, music.c and the generated game.c) is shared
+ * unchanged.
  *
  * There are no threads: the game runs on the CPU, and the SoC's timer
  * interrupt (~180 Hz, the PIT rate the game programs) does what the DOS
