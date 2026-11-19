@@ -1,6 +1,11 @@
 #!/bin/bash
 # Copy the core onto the Pocket's SD card over USB, with mtools (no mounting).
 #
+# Why: when the Pocket shares its card over USB, macOS has trouble mounting
+# the volume (the disk shows up, its FAT partition does not mount), so the
+# Finder and cp cannot reach it.  mtools reads and writes the FAT file
+# system on the device directly, without macOS mounting it.
+#
 #   ./push.sh                  make package, then build/package
 #   ./push.sh path/to.zip      a release zip
 #   ./push.sh path/to/dir      any folder laid out like the SD card

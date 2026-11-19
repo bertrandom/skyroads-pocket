@@ -146,6 +146,14 @@ the submodule commands.
     ./push.sh           # or: make package and copy it onto the Pocket over USB
                         # (USB SD card access on; mtools and gum, sudo)
 
+`push.sh` exists because macOS has trouble mounting the Pocket's card when
+the Pocket shares it over USB: the disk appears but its volume does not
+mount, so neither the Finder nor `cp` can reach it.  The script finds the
+disk ("Pocket SD"), lists what it will copy, asks, and then writes the files
+with `sudo mcopy`, which works on the FAT file system directly without
+mounting it.  It takes the local build (after `make package`), a release
+zip or a folder.
+
 ## Layout
 
 | | |
