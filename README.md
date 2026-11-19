@@ -30,6 +30,13 @@ firmware (the timer and keyboard interrupts, the files).
 
 Only the basic game: no widescreen, no ghosts, no network.
 
+## Installing
+
+Download the zip from the latest of the
+[releases](https://github.com/bertrandom/skyroads-pocket/releases) and unzip
+it at the root of the Pocket's SD card: it holds `Cores/bertrandom.SkyRoads`,
+`Platforms/` and `Assets/skyroads/` (the firmware and the game's files).
+
 ```
   Pocket buttons ──► keys register ──► timer interrupt (180 Hz) ──► the game's INT 9 handler / BIOS buffer
                                                                        │
