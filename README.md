@@ -1,7 +1,9 @@
 # SkyRoads on the Analogue Pocket
 
 <p align="center">
-  <img src="docs/pocket.png" height="400" alt="SkyRoads, road 1, on the Analogue Pocket's screen">
+  <img src="docs/pocket.png" height="400" alt="SkyRoads, road 1 (Red Heat), on the Analogue Pocket's screen">
+  <img src="docs/pocket-road09.png" height="400" alt="SkyRoads, road 9 (Blue Planet), on the Analogue Pocket's screen">
+  <img src="docs/pocket-road24.png" height="400" alt="SkyRoads, road 24 (Over the Base), on the Analogue Pocket's screen">
 </p>
 
 **SkyRoads** is a 1993 DOS game by Bluemoon.  You fly a hovering ship along roads floating in
