@@ -1,5 +1,20 @@
 # SkyRoads on the Analogue Pocket
 
+```mermaid
+flowchart LR
+  decomp["<b>skyroads-decomp</b><br/>decompilation and native port"]
+  web["<b>skyroads-web</b><br/>web port, ghost relay, deploy"]
+  pocket["<b>skyroads-pocket</b><br/>Analogue Pocket core"]
+  web -- "decomp/ submodule" --> decomp
+  pocket -- "decomp/ submodule" --> decomp
+  click decomp "https://github.com/bertrandom/skyroads-decomp"
+  click web "https://github.com/bertrandom/skyroads-web"
+  classDef here stroke-width:3px
+  class pocket here
+```
+
+This repository is **skyroads-pocket**. The others: [skyroads-decomp](https://github.com/bertrandom/skyroads-decomp) · [skyroads-web](https://github.com/bertrandom/skyroads-web).
+
 An openFPGA core that runs the SkyRoads port on the Pocket.  It is not an
 emulator, and the game is not rewritten in Verilog: the FPGA holds a small
 RISC-V computer (the SoC), and that computer runs the same decompiled C
