@@ -28,8 +28,6 @@ DOS hardware the game expects is either hardware next to the CPU (the VGA
 screen, the AdLib, the Sound Blaster's samples, the PC speaker) or C in the
 firmware (the timer and keyboard interrupts, the files).
 
-Only the basic game: no widescreen, no ghosts, no network.
-
 ## Installing
 
 Download the zip from the latest of the
