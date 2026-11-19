@@ -1,5 +1,9 @@
 # SkyRoads on the Analogue Pocket
 
+<p align="center">
+  <img src="docs/pocket.png" height="400" alt="SkyRoads, road 1, on the Analogue Pocket's screen">
+</p>
+
 ```mermaid
 flowchart LR
   decomp["<b>skyroads-decomp</b><br/>decompilation and native port"]
