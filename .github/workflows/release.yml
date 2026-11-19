@@ -27,7 +27,7 @@ jobs:
       - name: Version
         id: version
         run: |
-          CORE=dist/Cores/skyroads.SkyRoads/core.json
+          CORE=dist/Cores/bertrandom.SkyRoads/core.json
           VERSION=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["core"]["metadata"]["version"])' $CORE)
           DATE=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["core"]["metadata"]["date_release"])' $CORE)
           if [ "$GITHUB_REF_TYPE" = tag ] && [ "$GITHUB_REF_NAME" != "v$VERSION" ]; then
@@ -35,7 +35,7 @@ jobs:
             exit 1
           fi
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "zip=skyroads.SkyRoads_${VERSION}_${DATE}.zip" >> "$GITHUB_OUTPUT"
+          echo "zip=bertrandom.SkyRoads_${VERSION}_${DATE}.zip" >> "$GITHUB_OUTPUT"
 
       # LLVM 22, as on the Mac (Homebrew llvm@22): Ubuntu's clang 18 makes a
       # different firmware; this one comes out byte for byte the same
@@ -75,7 +75,7 @@ jobs:
       - name: Package
         run: |
           make package
-          test -f build/package/Cores/skyroads.SkyRoads/skyroads.rbf_r
+          test -f build/package/Cores/bertrandom.SkyRoads/skyroads.rbf_r
           cd build/package && zip -r -X "../${{ steps.version.outputs.zip }}" Assets Cores Platforms
 
       - uses: actions/upload-artifact@v4

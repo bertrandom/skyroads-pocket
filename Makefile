@@ -10,7 +10,7 @@
 #   make package        the SD card tree in build/package (with the bitstream
 #                       once build/quartus has been compiled)
 PKG  := build/package
-CORE := $(PKG)/Cores/skyroads.SkyRoads
+CORE := $(PKG)/Cores/bertrandom.SkyRoads
 RBF  := build/quartus/output_files/ap_core.rbf
 
 all: build/skyroads_fw.bin build/skyroads_data.bin
@@ -40,7 +40,7 @@ project:
 package: all
 	rm -rf $(PKG)
 	mkdir -p $(CORE) $(PKG)/Assets/skyroads/common $(PKG)/Platforms/_images
-	cp dist/Cores/skyroads.SkyRoads/* $(CORE)/
+	cp dist/Cores/bertrandom.SkyRoads/* $(CORE)/
 	cp dist/Platforms/skyroads.json $(PKG)/Platforms/
 	python3 tools/mkplatimage.py decomp/art/menu-backgrounds/4x3/mainmenu.png $(PKG)/Platforms/_images/skyroads.bin
 	cp build/skyroads_fw.bin build/skyroads_data.bin $(PKG)/Assets/skyroads/common/
