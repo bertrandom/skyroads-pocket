@@ -1,0 +1,92 @@
+# Build the core and package it the way the Pocket's SD card wants it
+# (Cores/, Platforms/, Assets/ at the root of a zip), which is what the
+# updaters (pupdate, Pocket Sync, ...) download from a GitHub release.
+#
+#   push a tag vX.Y.Z   build, then publish a release with the zip; the tag
+#                       must match "version" in dist/.../core.json
+#   run it by hand      build only: the zip is kept as a workflow artifact
+name: Build and release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Version
+        id: version
+        run: |
+          CORE=dist/Cores/skyroads.SkyRoads/core.json
+          VERSION=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["core"]["metadata"]["version"])' $CORE)
+          DATE=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["core"]["metadata"]["date_release"])' $CORE)
+          if [ "$GITHUB_REF_TYPE" = tag ] && [ "$GITHUB_REF_NAME" != "v$VERSION" ]; then
+            echo "::error::tag $GITHUB_REF_NAME does not match core.json version $VERSION"
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "zip=skyroads.SkyRoads_${VERSION}_${DATE}.zip" >> "$GITHUB_OUTPUT"
+
+      # LLVM 22, as on the Mac (Homebrew llvm@22): Ubuntu's clang 18 makes a
+      # different firmware; this one comes out byte for byte the same
+      - name: Tools
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q python3-pil zip
+          wget -qO llvm.sh https://apt.llvm.org/llvm.sh
+          sudo bash llvm.sh 22
+          sudo apt-get install -y -q lld-22
+          echo "LLVM=/usr/lib/llvm-22/bin" >> "$GITHUB_ENV"
+          echo "LLD=/usr/lib/llvm-22/bin/ld.lld" >> "$GITHUB_ENV"
+
+      - name: Dependencies
+        run: ./fetch-deps.sh
+
+      - name: Firmware and data pack
+        run: make
+
+      - name: Quartus project
+        run: make project
+
+      - name: Bitstream (Quartus Prime Lite 18.1)
+        run: |
+          docker run --rm --network none -v "$PWD:/w" -w /w/build/quartus \
+            raetro/quartus:pocket quartus_sh --flow compile ap_core
+
+      - name: Timing
+        run: |
+          S=build/quartus/output_files/ap_core.sta.summary
+          cat "$S"
+          if grep -q '^Slack : -' "$S"; then
+            echo "::error::timing not met (negative slack in $S)"
+            exit 1
+          fi
+
+      - name: Package
+        run: |
+          make package
+          test -f build/package/Cores/skyroads.SkyRoads/skyroads.rbf_r
+          cd build/package && zip -r -X "../${{ steps.version.outputs.zip }}" Assets Cores Platforms
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.version.outputs.zip }}
+          path: build/${{ steps.version.outputs.zip }}
+
+      - name: Release
+        if: github.ref_type == 'tag'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" "build/${{ steps.version.outputs.zip }}" \
+            --title "SkyRoads ${{ steps.version.outputs.version }}" --generate-notes
