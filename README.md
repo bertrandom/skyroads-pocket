@@ -134,6 +134,7 @@ the submodule commands.
 | `dist/` | the core's JSON files and platform |
 | `sim/` | Verilator testbenches: the SoC (`tb.cpp`), the whole core over the APF bridge (`tb_core.cpp`) and the audio's resampling (`tb_audio.cpp`, `spurs.py`), with an SDRAM chip model (`sdram_model.h`); `profile.py` |
 | `tools/mkpack.py` | the game files into one data slot |
+| `tools/mkplatimage.py` | the platform image (`Platforms/_images/skyroads.bin`) from the game's main menu |
 
 ## How the game meets the hardware
 
@@ -199,7 +200,14 @@ register as the player left them.  While the player runs the Pocket cannot
 sleep (save states are refused).  `sim/tb.cpp --settings` sets the setting
 in the simulation.
 
-## Licences
+## Credits and licences
+
+SkyRoads is © 1993 Bluemoon Interactive, who have made it freeware: the
+full game is a free download from their site,
+<http://www.bluemoon.ee/history/skyroads/index.html>.  The package
+includes the game's files (the data pack, `skyroads_data.bin`, built by
+`tools/mkpack.py` from `decomp/resources/Skyroads`) and its code, as
+decompiled in `decomp/`; the platform image is the game's main menu.
 
 The bitstream contains jtopl (GPL-3.0) and Hazard3 (Apache-2.0); a
 distributed bitstream is therefore under the GPL-3.0.  Analogue's template
