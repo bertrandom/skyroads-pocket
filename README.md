@@ -4,23 +4,13 @@
   <img src="docs/pocket.png" height="400" alt="SkyRoads, road 1, on the Analogue Pocket's screen">
 </p>
 
-**SkyRoads** is a 1993 DOS game by Bluemoon, a small studio in Estonia
-(programmed by Ahti Heinla, Priit Kasesalu and Jaan Tallinn, who went on to
-write Kazaa and Skype).  You fly a hovering ship along roads floating in
+**SkyRoads** is a 1993 DOS game by Bluemoon.  You fly a hovering ship along roads floating in
 space: speed up, slow down, steer and jump across gaps and over blocks to
 reach the tunnel at the end of each road before you run out of fuel or
 oxygen.  Each world's gravity changes how far you can jump, and the colour
 of the road matters: light green speeds you up, dark green slows you down,
 dark grey is too slippery to steer on, red burns and blue refills fuel and
 oxygen.  There are 30 roads in 10 worlds.
-
-It was a polished-up remake of Kosmonaut (1990), Bluemoon's first commercial
-game, made in three months and released as a small shareware title that went
-on to sell around the world, with low-cost retail deals from the U.S. to
-Taiwan; a Christmas edition with harder roads, the Xmas Special, followed in
-1994.  Bluemoon has since made it freeware: both are free downloads from
-[their site](http://www.bluemoon.ee/history/skyroads/index.html) (more in
-the [Wikipedia article](https://en.wikipedia.org/wiki/SkyRoads_(video_game))).
 
 ```mermaid
 flowchart LR
