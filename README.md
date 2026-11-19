@@ -38,10 +38,9 @@ What has been checked, and how:
 | JSON files (`dist/`) | checked against Analogue's openFPGA documentation (data slots, input keys, core.json limits, platform metadata) |
 | size | Yosys (`synth_intel_alm`, Cyclone V): about 7,600 LUTs, 1,700 adder cells and 4,700 flip-flops, about 30% of the Pocket's FPGA; about 126 of its 308 M10K block RAMs (60 mapped by Yosys plus the VRAM, the save RAM and the palette, which have a port in another clock domain and which Yosys cannot map) |
 | Quartus build and timing | Quartus Prime Lite 18.1 (the `raetro/quartus:pocket` image, below): 4,761 ALMs (26%), 202 of 308 block RAMs, 10 DSP blocks; timing met at every corner, the 49.152 MHz system clock with about 0.1 ns to spare (fitter seed 2); the PLL comes out exactly at 12.288 and 49.152 MHz |
-| the real Pocket | **not done** |
+| the real Pocket | played through many of the roads, with the music, the sound effects and the controls; the road completions survive quitting the core and starting it again (checked in the save file on the SD card); sleep and wake carry on the game where it was; the music player (a Core Setting) works |
 
-So this has never run on a Pocket.  Things that can be wrong there and that
-the simulation cannot show:
+Two things went wrong on the Pocket that the simulation could not show:
 
 - **SDRAM timing.**  The chip is clocked by the inverted system clock; read
   data is caught at the pad on the falling edge of the system clock (about
@@ -49,6 +48,12 @@ the simulation cannot show:
   chip's tAC and tOH and the pad delays) and then on the rising edge.  The
   first build caught it on the rising edge, which on the Pocket fell between
   two words: a black screen.  The SDRAM pins have no I/O timing constraints.
+- **The save's read-back.**  The Pocket sets up the next address before it
+  takes the data of a read, so the core answers each read at the next one
+  (the save RAM's word is latched on the read strobe).  Answering for the
+  address as it stood shifted the save file by a word: its header was lost
+  and the progress with it at every restart.  `sim/tb_core.cpp` now reads
+  the save back the way the Pocket does.
 
 **The status screen.**  If the firmware has not written the palette 5 s
 after power-on (a normal start does it within about a second), the core
