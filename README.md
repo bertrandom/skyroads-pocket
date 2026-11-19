@@ -143,6 +143,8 @@ the submodule commands.
     # on a machine with Quartus:
     cd build/quartus && quartus_sh --flow compile ap_core
     make package        # build/package: copy it to the SD card's root
+    ./push.sh           # or: make package and copy it onto the Pocket over USB
+                        # (USB SD card access on; mtools and gum, sudo)
 
 ## Layout
 
