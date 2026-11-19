@@ -9,14 +9,14 @@
 #                   testbench (SKY_DEMO_TEST on, debug output)
 #
 # Needs clang with the RISC-V target (Homebrew llvm) and ld.lld (Homebrew lld).
-PORT  := ../../port
+PORT  := ../decomp/port
 BUILD := ../build
 LLVM  ?= /opt/homebrew/opt/llvm@22/bin
 LLD   ?= /opt/homebrew/opt/lld/bin/ld.lld
 CC_RV := $(LLVM)/clang
 OBJCOPY := $(LLVM)/llvm-objcopy
 
-# the shared game code (see ../../port/README.md)
+# the shared game code (see ../decomp/port/README.md)
 GAME_SRC := runtime.c video.c manual.c render.c music.c game.c
 
 ARCH   := --target=riscv32-unknown-elf -march=rv32imac_zba_zbb_zbs -mabi=ilp32
@@ -82,7 +82,7 @@ $(BUILD)/fw_host: $(HOST_OBJS)
 host: $(BUILD)/fw_host
 
 $(BUILD)/skyroads_data.bin:
-	python3 ../tools/mkpack.py ../../resources/Skyroads $@
+	python3 ../tools/mkpack.py ../decomp/resources/Skyroads $@
 
 host-test: $(BUILD)/fw_host $(BUILD)/skyroads_data.bin
 	SKY_DEMO_TEST=1 POCKET_PACK=$(BUILD)/skyroads_data.bin $(BUILD)/fw_host

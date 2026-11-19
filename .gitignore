@@ -1,0 +1,13 @@
+.DS_Store
+__pycache__/
+
+# fetched dependencies (fetch-deps.sh), build outputs, simulation
+vendor/
+build/
+sim/obj*/
+sim/frames*/
+sim/*_frames/
+sim/demo_frames/
+sim/*.log
+sim/*.wav
+sim/songs/

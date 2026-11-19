@@ -2,7 +2,7 @@
 // vendor/ymfm): a reference to set the Pocket's renders (tb_songs.cpp,
 // jtopl2) and the native port's (Nuked-OPL3) against.
 //
-// The same writes as tb_songs.cpp (../../port/tools/render_songs.c --writes),
+// The same writes as tb_songs.cpp (../decomp/port/tools/render_songs.c --writes),
 // each tick's at that tick; the chip's own rate (3579545 / 72 = 49716 Hz)
 // with no resampling and no mixer: the chip's output as it is, faded over
 // the last 3 seconds like the other renders.

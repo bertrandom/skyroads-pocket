@@ -1,6 +1,6 @@
 /* SkyRoads on the Analogue Pocket: the platform layer of the port.
  *
- * Replaces the SDL side of ../../port (main.c, platform.c, hw.c and the
+ * Replaces the SDL side of ../decomp/port (main.c, platform.c, hw.c and the
  * mixer in audio.c).  The game code itself (runtime.c, manual.c, render.c,
  * video.c, music.c and the generated game.c) is shared unchanged.
  *

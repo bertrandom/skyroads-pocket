@@ -3,7 +3,7 @@
 // core sends to the Pocket's DAC.
 //
 // The writes are the ones the firmware makes, tick by tick (the shared
-// player, music.c, saved by ../../port/tools/render_songs.c --writes); each
+// player, music.c, saved by ../decomp/port/tools/render_songs.c --writes); each
 // tick's writes go into the queue at that tick, as opl_out() does (waiting
 // while it is full).  The mixer's volume is the firmware's default (70:
 // 70 * 70 * 256 / 10000).  The output is sampled at 48 kHz, as the I2S side

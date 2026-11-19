@@ -75,8 +75,8 @@ $(OBJ)_songs/Vaudio: ../rtl/audio.v ../rtl/sync_fifo.v $(wildcard $(J)/*.v) tb_s
 	    ../rtl/audio.v ../rtl/sync_fifo.v $(wildcard $(J)/*.v) tb_songs.cpp -o Vaudio
 songs: $(OBJ)_songs/Vaudio
 	mkdir -p songs/writes
-	$(MAKE) -C ../../port render_songs
-	../../port/render_songs ../../resources/Skyroads/MUZAX.LZS songs/writes --writes songs/writes > /dev/null
+	$(MAKE) -C ../decomp/port render_songs
+	../decomp/port/render_songs ../decomp/resources/Skyroads/MUZAX.LZS songs/writes --writes songs/writes > /dev/null
 	for f in songs/writes/*.opl; do n=$$(basename "$$f" .opl); $(OBJ)_songs/Vaudio "$$f" "songs/$$n.wav" & done; wait
 .PHONY: songs
 

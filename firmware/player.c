@@ -1,5 +1,5 @@
 /* The music player: the game's songs one at a time, with the game's own
- * player (../../port/music.c) and the Pocket's OPL2, to listen to them
+ * player (../decomp/port/music.c) and the Pocket's OPL2, to listen to them
  * apart from the game.  A Core Setting ("Music player", SETTINGS bit 0)
  * turns it on: pocket.c keeps the game aside (an excursion, savestate.c)
  * and calls player_run() inside the timer interrupt, with interrupts off;

@@ -18,7 +18,7 @@ all: build/skyroads_fw.bin build/skyroads_data.bin
 build/skyroads_fw.bin: FORCE
 	$(MAKE) -C firmware
 build/skyroads_data.bin: tools/mkpack.py
-	python3 tools/mkpack.py ../resources/Skyroads $@
+	python3 tools/mkpack.py decomp/resources/Skyroads $@
 
 host-test:
 	$(MAKE) -C firmware host-test

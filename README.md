@@ -3,7 +3,8 @@
 An openFPGA core that runs the SkyRoads port on the Pocket.  It is not an
 emulator, and the game is not rewritten in Verilog: the FPGA holds a small
 RISC-V computer (the SoC), and that computer runs the same decompiled C
-game code as the native and web ports (`../port`), compiled for RISC-V.  The
+game code as the native and web ports, compiled for RISC-V.  That code comes
+from the decompilation, a git submodule in `decomp/` (`decomp/port`).  The
 DOS hardware the game expects is either hardware next to the CPU (the VGA
 screen, the AdLib, the Sound Blaster's samples, the PC speaker) or C in the
 firmware (the timer and keyboard interrupts, the files).
@@ -85,7 +86,7 @@ emulation; from this directory, after `make project` (about 10 minutes):
     docker run --rm --platform linux/amd64 --network none -v "$PWD:/w" -w /w/build/quartus \
         raetro/quartus:pocket quartus_sh --flow compile ap_core
 
-The whole of `pocket/` is mounted because the project refers to `rtl/` and
+The whole repository is mounted because the project refers to `rtl/` and
 `vendor/`.  `mkproject.sh` sets Quartus to one processor: its parallel
 helpers crash under the emulation and leave it waiting forever.
 
@@ -93,9 +94,13 @@ helpers crash under the emulation and leave it waiting forever.
 
 Needs: Homebrew `llvm` (clang with the RISC-V target) and `lld`, Python 3,
 Verilator for the simulation, and Quartus Prime Lite (Linux or Windows) for
-the bitstream.
+the bitstream.  The submodule's URL is `../skyroads-decomp`, the
+decompilation's repository next to this one; while that is a folder on this
+machine rather than a remote, git wants `-c protocol.file.allow=always` on
+the submodule commands.
 
-    ./fetch-deps.sh     # Hazard3, jtopl, Analogue's core template into vendor/
+    git submodule update --init   # the decompilation, in decomp/
+    ./fetch-deps.sh     # Hazard3, jtopl, Analogue's core template, ymfm into vendor/
     make                # build/skyroads_fw.bin, build/skyroads_data.bin
     make host-test      # the firmware natively: demo replay, PASS/FAIL
     make -C firmware host-check   # the same, checking the fast LZS decoder
@@ -112,7 +117,7 @@ the bitstream.
 
 | | |
 |---|---|
-| `firmware/pocket.c` | the platform layer: replaces the port's `main.c`, `platform.c`, `hw.c` and the SDL mixer in `audio.c`; the rest of `../port` (`runtime.c`, `manual.c`, `render.c`, `video.c`, `music.c`, the generated `game.c`) is compiled unchanged, with `SKY_NO_GHOSTS` |
+| `firmware/pocket.c` | the platform layer: replaces the port's `main.c`, `platform.c`, `hw.c` and the SDL mixer in `audio.c`; the rest of `decomp/port` (`runtime.c`, `manual.c`, `render.c`, `video.c`, `music.c`, the generated `game.c`) is compiled unchanged, with `SKY_NO_GHOSTS` |
 | `firmware/player.c`, `font6x11.h` | the music player (a Core Setting); the font is Pillow's built-in bitmap font (`tools/mkfont.py`) |
 | `firmware/savestate.c` | save states, for sleep: the blob in the staging area, saving in the timer interrupt and resuming there |
 | `firmware/lzs_fast.c` | the game's LZS decompression with its bit reader in registers: twice as fast to load as the shared decoder on this CPU (which it replaces in the Pocket build only, `SKY_FAST_LZS`) |
@@ -146,7 +151,7 @@ the bitstream.
   the menus; X (top) and Select are Esc; Start is Enter.  Esc in the main
   menu, which quits to DOS, is ignored (`pocket.c`, a linker wrap of the
   game's key read and `link.ld`'s bounds of the menu's code).
-- **Sound.**  The music player (`../port/music.c`) writes OPL2 registers
+- **Sound.**  The music player (`decomp/port/music.c`) writes OPL2 registers
   into a queue that the hardware feeds to jtopl2 one per chip sample (its
   output, at 49,716 Hz, is interpolated linearly for the 48 kHz I2S side:
   `make -C sim audio` measures a pure tone's spurious energy, -19 dB
