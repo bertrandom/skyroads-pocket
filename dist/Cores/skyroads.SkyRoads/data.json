@@ -1,0 +1,36 @@
+{
+    "data": {
+        "magic": "APF_VER_1",
+        "data_slots": [
+            {
+                "name": "Firmware",
+                "id": 0,
+                "required": true,
+                "parameters": "0x8",
+                "filename": "skyroads_fw.bin",
+                "address": "0x00000000"
+            },
+            {
+                "name": "Game data",
+                "id": 1,
+                "required": true,
+                "parameters": "0x8",
+                "filename": "skyroads_data.bin",
+                "address": "0x00800000"
+            },
+            {
+                "name": "Progress",
+                "id": 2,
+                "required": false,
+                "nonvolatile": true,
+                "parameters": "0x20",
+                "filename": "skyroads.sav",
+                "address": "0x20000000",
+                "size_maximum": "0x400",
+                "extensions": [
+                    "sav"
+                ]
+            }
+        ]
+    }
+}

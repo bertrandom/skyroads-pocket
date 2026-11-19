@@ -1,0 +1,18 @@
+{
+    "input": {
+        "magic": "APF_VER_1",
+        "controllers": [
+            {
+                "type": "default",
+                "mappings": [
+                    { "id": 0, "name": "Jump / Enter", "key": "pad_btn_a" },
+                    { "id": 1, "name": "Jump / Enter", "key": "pad_btn_b" },
+                    { "id": 2, "name": "Back (Esc)", "key": "pad_btn_x" },
+                    { "id": 3, "name": "Jump / Enter", "key": "pad_btn_y" },
+                    { "id": 4, "name": "Select (Enter)", "key": "pad_btn_start" },
+                    { "id": 5, "name": "Back (Esc)", "key": "pad_btn_select" }
+                ]
+            }
+        ]
+    }
+}

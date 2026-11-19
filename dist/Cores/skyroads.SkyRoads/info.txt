@@ -1,0 +1,7 @@
+SkyRoads (Bluemoon Interactive, 1993), from the decompilation at
+https://skyroads.org: the game's own code, compiled for a RISC-V CPU that
+runs in the FPGA, with the VGA screen, the AdLib (an OPL2), the Sound
+Blaster's samples and the PC speaker as hardware next to it.
+
+Controls: d-pad steer / accelerate / brake, A or Y jump, Start or X Enter,
+B or Select Esc.
