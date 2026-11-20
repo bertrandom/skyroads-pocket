@@ -9,7 +9,7 @@
             "description": "SkyRoads from its decompilation, on a RISC-V CPU in the FPGA",
             "author": "bertrandom",
             "url": "https://skyroads.org",
-            "version": "0.2.1",
+            "version": "0.2.2",
             "date_release": "2026-11-19"
         },
         "framework": {
