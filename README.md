@@ -192,7 +192,8 @@ only and keeps the zip as an artifact.
   menu, which quits to DOS, is ignored (`pocket.c`, a linker wrap of the
   game's key read and `link.ld`'s bounds of the menu's code).
 - **Sound.**  The music player (`decomp/port/music.c`) writes OPL2 registers
-  into a queue that the hardware feeds to jtopl2 one per chip sample (its
+  into a queue that the hardware feeds to jtopl2 one per 96 chip clocks, a
+  sample period and the three slots jtopl takes to apply a write (its
   output, at 49,716 Hz, is interpolated linearly for the 48 kHz I2S side:
   `make -C sim audio` measures a pure tone's spurious energy, -19 dB
   without, -34 dB with); the

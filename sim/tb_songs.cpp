@@ -14,6 +14,10 @@
 // steps on its clock enable, which is then every cycle, so it computes the
 // same samples; only the instants at which the resampler and the 48 kHz
 // side pick them up move by a fraction of a microsecond.  14 times faster.
+// Not quite the same, though: how each write lines up with jtopl's slots
+// changes, and a write gap too short in chip clocks was hidden here (it
+// lost writes only at 49.152 MHz: rtl/audio.v's GAP).  To check that, build
+// this with -GSYS_HZ=49152000 and SYS set to match (14 times slower).
 //
 //   Vaudio_songs IN.opl OUT.wav
 #include "Vaudio.h"

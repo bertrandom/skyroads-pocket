@@ -50,9 +50,19 @@ module audio #(
         .push(opl_wr), .din(opl_data),
         .pop(oq_pop), .dout(oq_dout), .empty(oq_empty), .free(opl_free));
 
-    // one register write per OPL sample period (72 chip clocks, ~20 us), so
-    // that every write, a key off followed by a key on included, is seen
-    localparam GAP = SYS_HZ / (OPL_HZ / 72) + 16;
+    // 96 chip clocks (~27 us) after a data write before the next write, so
+    // that every write, a key off followed by a key on included, is seen.
+    // jtopl takes an operator write over four slots after the operator's
+    // own (TL, the multiplier and AM at stages II and IV, jtopl_csr.v) and
+    // any write, the next address included, clears that pipeline: the gap
+    // must be a whole sample period (72 chip clocks, all 18 slots) plus the
+    // three slots (12 clocks), in chip clocks.  It was a sample period plus
+    // 16 system clocks: enough with the chip clocked every cycle (sim/
+    // tb_songs.cpp) but ~73 chip clocks at 49.152 MHz, and a write whose
+    // slot came round late lost its TL or multiplier (a voice missing or
+    // wrong, differently from one play to the next)
+    localparam [63:0] GAP64 = 64'd96 * SYS_HZ / OPL_HZ;
+    localparam GAP = GAP64[15:0];
     localparam GAP_ADDR = SYS_HZ / (OPL_HZ / 12) + 4;   // after the address write
     reg [15:0] gap;
     reg [1:0]  oseq;
