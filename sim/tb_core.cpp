@@ -19,7 +19,9 @@
 // core is powered off (a new model, an empty SDRAM); the core is loaded
 // again, the save state written to the address [00A0] gave, [00A4], and
 // the game must carry on from where it was: its frames after waking are
-// compared with the frames the first run went on to show.  --wake-late
+// compared with the frames the first run went on to show.  The state is
+// saved on the main menu (Start pressed on the intro), and Start pressed
+// after waking must take the game on from it.  --wake-late
 // sends [0011 Reset Exit] before the save state (loaded into the game
 // already running, by its timer interrupt).
 //
@@ -28,6 +30,7 @@
 #include "Vcore_top___024root.h"
 #include "verilated.h"
 #include "sdram_model.h"
+#include <algorithm>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -222,7 +225,13 @@ static int sleep_test(const std::vector<uint8_t> &fw, const std::vector<uint8_t>
     write_slot(0x00000000, fw); write_slot(0x00800000, pack); write_slot(0x20000000, save);
     host_cmd(0x008F); host_cmd(0x0011);
     std::vector<std::vector<uint32_t>> boot;    // what a fresh start shows, frame by frame
-    run_ms(save_at, &boot);
+    // Start on the intro, then the save state on the main menu: the game
+    // waiting for a key there (SDL_Delay), the wait the wake must not stretch
+    run_ms(save_at - 1000, &boot);
+    top->cont1_key = 0x10000000 | 1u << 15;
+    run_ms(100, &boot);
+    top->cont1_key = 0x10000000;
+    run_ms(900, &boot);
     fprintf(stderr, "tb: %.0f ms, %d frames: [00A0] save state\n", cyc / CLK_HZ * 1e3, grab.frames);
     host_cmd(0x00A0, 1);
     uint32_t st = host_poll(0x00A0, 400);
@@ -274,8 +283,20 @@ static int sleep_test(const std::vector<uint8_t> &fw, const std::vector<uint8_t>
             changes, after.size(), fresh * 100);
     fprintf(stderr, "tb: %.0f ms after waking: %d lit pixels; best match: frame %zu of the first run's continuation, %.2f%% of pixels identical\n",
             cyc / CLK_HZ * 1e3 - t0, lit_w, at, best * 100);
+    // the controls after waking: Start (Enter) must take the game on from
+    // the screen it woke on, which without it stays as the first run went
+    // on to show (a wait in progress when the state was saved must not
+    // outlast the wake: the menus wait for a key in SDL_Delay)
+    top->cont1_key = 0x10000000 | 1u << 15;
+    run_ms(100);
+    top->cont1_key = 0x10000000;
+    std::vector<std::vector<uint32_t>> pressed;
+    run_ms(600, &pressed);
+    double still = 0;
+    for (size_t i = 0; i < after.size(); i++) still = std::max(still, same_frac(pressed.back(), after[i]));
+    fprintf(stderr, "tb: Start pressed after waking: %.2f%% like the screen it woke on\n", still * 100);
     bool ok = (st & 0xffff) == 2 && bad == 0 && best >= 0.98 && fresh < 0.9 && lit_w > 1000 &&
-              errors_a == 0 && sd.errors == 0;
+              still < 0.9 && errors_a == 0 && sd.errors == 0;
     fprintf(stderr, "tb: sleep %s\n", ok ? "PASS" : "FAIL");
     top->final();
     delete top;

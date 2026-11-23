@@ -31,11 +31,20 @@ static uint32_t s_sys_hz;
 /* ------------------------------------------------------------------ */
 /* time                                                                */
 /* ------------------------------------------------------------------ */
-static uint64_t cycles(void)
+static uint64_t raw_cycles(void)
 {
     uint32_t lo = hw_rd(R_CYCLES_LO);   /* latches HI */
     return ((uint64_t)hw_rd(R_CYCLES_HI) << 32) | lo;
 }
+
+/* the counter starts at 0 when the core is loaded, so waking from sleep
+ * would put it back in time: a wait in progress (SDL_Delay, the menus'
+ * key wait) would spin until it caught up.  The game's time is the
+ * counter plus an offset that a save state carries on from (and that
+ * stops while the game is kept aside: sleep, the music player). */
+static volatile uint64_t s_cyc_off;  /* volatile: a wait reads it again after a wake */
+static uint64_t s_cyc_saved;
+static uint64_t cycles(void) { return raw_cycles() + s_cyc_off; }
 
 uint64_t plat_millis(void) { return cycles() / (s_sys_hz / 1000u); }
 
@@ -650,12 +659,14 @@ static uint32_t timer_period(void) { return (uint32_t)((uint64_t)s_sys_hz * 6628
 
 void ss_platform_save(void)
 {
+    s_cyc_saved = cycles();
     memcpy(s_vram_copy, g_mem + VGA_BASE, sizeof s_vram_copy);
 }
 
 void ss_platform_restore(void)
 {
     unsigned i;
+    s_cyc_off = s_cyc_saved - raw_cycles();
     hw_wr(R_VRAM_BASE, (uint32_t)(uintptr_t)(g_mem + VGA_BASE));
     memcpy(g_mem + VGA_BASE, s_vram_copy, sizeof s_vram_copy);
     for (i = 0; i < 256; i++)
